@@ -99,8 +99,43 @@ public class Customer {
 		return retVal;
 	}
 	
-	public static void updateProfile() {
-		
+	public static void updateProfile(Statement st, String cid, String name, String address, String email, String phone) {
+		// if there is a name input, then change the name
+		if ( name != null ) {
+			String query = "UPDATE CUSTOMER SET NAME=" + name + "WHERE CID=" + cid;
+			try {
+				st.executeUpdate(query);
+			} catch (SQLException e) {
+				throw new IllegalArgumentException("Error updating customer name");
+			}
+		}
+		// if there is an address input, then change the address
+		if ( address != null ) {
+			String query = "UPDATE CUSTOMER SET ADDRESS=" + address + "WHERE CID=" + cid;
+			try {
+				st.executeUpdate(query);
+			} catch (SQLException e) {
+				throw new IllegalArgumentException("Error updating customer address");
+			}
+		}
+		// if there is an email input, then change the email
+		if ( email != null ) {
+			String query = "UPDATE CUSTOMER SET EMAIL=" + email + "WHERE CID=" + cid;
+			try {
+				st.executeUpdate(query);
+			} catch (SQLException e) {
+				throw new IllegalArgumentException("Error updating customer email");
+			}
+		}
+		// if there is a phone input, then change the phone
+		if ( phone != null ) {
+			String query = "UPDATE CUSTOMER SET PHONE=" + phone + "WHERE CID=" + cid;
+			try {
+				st.executeUpdate(query);
+			} catch (SQLException e) {
+				throw new IllegalArgumentException("Error updating customer phone");
+			}
+		}
 	}
 	
 	public static String viewServiceHistory() {
