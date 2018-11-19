@@ -14,13 +14,13 @@ public interface Employee {
 		fields[6] = startDate;
 		fields[7] = sid;
 		try{
-			st.executeUpdate("INSERT INTO Employee", fields);
+			st.executeUpdate("INSERT INTO Employees", fields);
 		} catch (SQLException e) {
 			throw new IllegalArgumentException("Error creating employee");
 		}
 	}
 	static ResultSet getEmployee(Statement st, String eid){
-		String qstr = "SELECT * FROM Employee WHERE eid = " + eid;
+		String qstr = "SELECT * FROM Employees WHERE eid = " + eid;
 		ResultSet rs = null;
 		try{
 			rs = st.executeQuery(qstr);
@@ -30,7 +30,7 @@ public interface Employee {
 		return rs;
 	}
 	static void updateEmployee(Statement st, String eid, String role, String name, String address, String email, String phoneNum, String startDate, String compensation, String sid){
-		String qstr = "UPDATE Employee SET";
+		String qstr = "UPDATE Employees SET";
 		if (!(role == null) && !(role.length() == 0)){
 			qstr += " role = " + role + ",";
 		}
@@ -65,7 +65,7 @@ public interface Employee {
 		}
 	}
 	static ResultSet employeeGetName(Statement st, String eid){
-		String qstr = "SELECT name FROM Employee WHERE eid = " + eid;
+		String qstr = "SELECT name FROM Employees WHERE eid = " + eid;
 		ResultSet rs = null;
 		try{
 			rs = st.executeQuery(qstr);
