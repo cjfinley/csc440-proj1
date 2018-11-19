@@ -80,16 +80,21 @@ public class Customer {
 			notFound = true;
 			
 			retVal += "Car:\n";
-			while ( owns.next() && notFound ) {
+			while ( owns.next() ) {
 				// Check to make sure it's there
 				if ( owns.getString("CID") != null && owns.getString("CID").equals(cid)) {
-					// TODO finish creating the vehicle string
-					retVal += "     ";
+					// Adds a tab before so the vehicle entries are entered in
+					retVal += "     Make: " + owns.getString("MAKE") + "\n";
+					retVal += "     Model: " + owns.getString("MODEL") + "\n";
+					notFound = false;
 				}
 			}
+			
+			if ( notFound ) {
+				retVal += "     No vehicles registered\n";
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new IllegalArgumentException("Error viewing profile");
 		}
 		return retVal;
 	}
