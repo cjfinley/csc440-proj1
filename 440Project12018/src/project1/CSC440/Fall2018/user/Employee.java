@@ -34,6 +34,9 @@ public interface Employee {
 		if (!(role == null) && !(role.length() == 0)){
 			qstr += " role = " + role + ",";
 		}
+		if (!(eid == null) && !(eid.length() == 0)){
+			qstr += " eid = " + eid + ",";
+		}
 		if (!(name == null) && !(name.length() == 0)){
 			qstr += " name = " + name + ",";
 		}
