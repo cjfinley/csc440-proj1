@@ -19,12 +19,20 @@ public class ServiceHistory {
 		st.setString(7, mechanic_name);
 		st.executeUpdate();
 	}
-	public static ResultSet getServiceHistory(Connection conn, String plate, String service_date, String service_type) throws SQLException{
+	public static ResultSet getServiceHistorySpecific(Connection conn, String plate, String service_date, String service_type) throws SQLException{
 		String qstr = "SELECT * FROM Service_History WHERE plate = ? AND service_date = ? AND service_type = ?";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, plate);
 		st.setString(2, service_date);
 		st.setString(3, service_type);
+		ResultSet rs = null;	
+		rs = st.executeQuery();
+		return rs;
+	}
+	public static ResultSet getServiceHistoryByPlate(Connection conn, String plate) throws SQLException{
+		String qstr = "SELECT * FROM Service_History WHERE plate = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, plate);
 		ResultSet rs = null;	
 		rs = st.executeQuery();
 		return rs;

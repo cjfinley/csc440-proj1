@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 import project1.CSC440.Fall2018.Objects.Vehicle;
+import project1.CSC440.Fall2018.Records.ServiceHistory;
 import project1.CSC440.Fall2018.user.Customer;
 import project1.CSC440.Fall2018.user.Receptionist;
 
@@ -46,6 +47,7 @@ public static Scanner in = new Scanner(System.in);
 				break;
 			case 4:
 				//Call Service History menu
+				getServiceHistory(conn, user);
 				break;
 			case 5:
 				//Call Reschedule Service menu
@@ -299,7 +301,18 @@ public static Scanner in = new Scanner(System.in);
 					while(r != null && r.next()){
 						cid = r.getString("cid");
 					}
-					
+					ResultSet vehicles = Vehicle.getPlatesForOwner(conn, cid);
+					while(vehicles != null && vehicles.next()){
+						String currentPlate = vehicles.getString("plate");
+						ResultSet services = ServiceHistory.getServiceHistoryByPlate(conn, currentPlate);
+						System.out.println("\nServices for vehicle with plate: " + currentPlate);
+						while(services != null && services.next()){
+							System.out.printf("%n\tService type: %s%n", services.getString("service_type"));
+							System.out.printf("\tMechanic Name: %s%n", services.getString("mechanic_name"));
+							System.out.printf("\tStart Date: %s%n", services.getString("service_date"));
+							System.out.printf("\tStart Time: %s%n", services.getString("start_time"));
+						}
+					}
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}

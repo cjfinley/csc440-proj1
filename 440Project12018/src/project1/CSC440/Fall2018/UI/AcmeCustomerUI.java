@@ -272,7 +272,7 @@ public class AcmeCustomerUI {
 					String service_type = in.nextLine();
 					ResultSet rs = null;
 					try {
-						rs = ServiceHistory.getServiceHistory(conn, plate, service_date, service_type);
+						rs = ServiceHistory.getServiceHistorySpecific(conn, plate, service_date, service_type);
 					} catch (SQLException e1) {
 						System.err.println(e1.getMessage());
 						System.out.println("Error 202: AcmeCustomerUI.carServiceMenu.java");
