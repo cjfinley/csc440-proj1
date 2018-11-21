@@ -3,7 +3,7 @@ package project1.CSC440.Fall2018.Objects;
 import java.sql.*;
 
 public class ServiceCenter {
-	public static void createServiceCenter(Statement st, String sid, String name, String address, String phone){
+	public static void createServiceCenter(Connection conn, String sid, String name, String address, String phone){
 		String fields[] = new String[4];
 		fields[0] = sid;
 		fields[1] = name;
@@ -15,7 +15,7 @@ public class ServiceCenter {
 			throw new IllegalArgumentException("Error creating service center");
 		}
 	}
-	public static ResultSet getServiceCenter(Statement st, String sid){
+	public static ResultSet getServiceCenter(Connection conn, String sid){
 		String qstr = "SELECT * FROM Service_Center WHERE sid = " + sid;
 		ResultSet rs = null;
 		try{
@@ -25,7 +25,7 @@ public class ServiceCenter {
 		}
 		return rs;
 	}
-	public static void updateServiceCenter(Statement st, String sid, String name, String address, String phone){
+	public static void updateServiceCenter(Connection conn, String sid, String name, String address, String phone){
 		String qstr = "UPDATE Service_Center SET";
 		if (!(sid == null) && !(sid.length() == 0)){
 			qstr += " sid = " + sid + ",";

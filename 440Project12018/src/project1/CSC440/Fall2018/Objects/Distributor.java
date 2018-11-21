@@ -36,11 +36,16 @@ public class Distributor {
 		qstr = qstr.substring(0, qstr.length() - 1);
 		qstr += " WHERE did = ?";
 		PreparedStatement st = conn.prepareStatement(qstr);
+		int count = 1;
 		if(track[0] == 1){
-			st.setString(1, did);
+			st.setString(count, did);
+			count++;
 		}
 		if(track[1] == 1){
-			st.setString(2, name);
+			st.setString(count, name);
+			count++;
 		}
+		st.setString(count, did);
+		st.executeUpdate();
 	}
 }

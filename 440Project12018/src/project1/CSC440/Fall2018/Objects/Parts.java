@@ -3,49 +3,63 @@ package project1.CSC440.Fall2018.Objects;
 import java.sql.*;
 
 public class Parts {
-	public static void createPart(Statement st, String part_name, String make, String price, String warranty){
-		String fields[] = new String[4];
-		fields[0] = part_name;
-		fields[1] = make;
-		fields[2] = price;
-		fields[3] = warranty;
-		try{
-			st.executeUpdate("INSERT INTO Parts", fields);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error creating part");
-		}
+	public static void createPart(Connection conn, String part_name, String make, String price, String warranty) throws SQLException{
+		String qstr = "INSERT INTO Parts ?, ?, ?, ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, part_name);
+		st.setString(2, make);
+		st.setString(3, price);
+		st.setString(4, warranty);
+		st.executeUpdate();
 	}
-	public static ResultSet getPart(Statement st, String part_name){
-		String qstr = "SELECT * FROM Parts WHERE part_name = " + part_name;
+	public static ResultSet getPart(Connection conn, String part_name) throws SQLException{
+		String qstr = "SELECT * FROM Parts WHERE part_name = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, part_name);
 		ResultSet rs = null;
-		try{
-			rs = st.executeQuery(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error getting part");
-		}
+		rs = st.executeQuery();
 		return rs;
 	}
-	public static void updatePart(Statement st, String part_name, String make, String price, String warranty){
+	public static void updatePart(Connection conn, String part_name, String make, String price, String warranty) throws SQLException{
 		String qstr = "UPDATE Parts SET";
+		int[] track = {0,0,0,0};
 		if (!(part_name == null) && !(part_name.length() == 0)){
-			qstr += " part_name = " + part_name + ",";
+			qstr += " part_name = ?,";
+			track[0] = 1;
 		}
 		if (!(make == null) && !(make.length() == 0)){
-			qstr += " make = " + make + ",";
+			qstr += " make = ?,";
+			track[1] = 1;
 		}
 		if (!(price == null) && !(price.length() == 0)){
-			qstr += " price = " + price + ",";
+			qstr += " price = ?,";
+			track[2] = 1;
 		}
 		if (!(warranty == null) && !(warranty.length() == 0)){
-			qstr += " warranty = " + warranty + ",";
+			qstr += " warranty = ?,";
+			track[3] = 1;
 		}
-		
 		qstr = qstr.substring(0, qstr.length() - 1);
-		qstr += " WHERE part_name = " + part_name;
-		try{
-			st.executeUpdate(qstr);
-		} catch (SQLException e){
-			throw new IllegalArgumentException("Error updating part");
+		qstr += " WHERE part_name = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		int count = 1;
+		if(track[0] == 1){
+			st.setString(count, part_name);
+			count++;
 		}
+		if(track[1] == 1){
+			st.setString(count, make);
+			count++;
+		}
+		if(track[2] == 1){
+			st.setString(count, price);
+			count++;
+		}
+		if(track[3] == 1){
+			st.setString(count, warranty);
+			count++;
+		}
+		st.setString(count, part_name);
+		st.executeUpdate();
 	}
 }
