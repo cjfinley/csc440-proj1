@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class Vehicle {
 	public static void createVehicle(Connection conn, String plate, String make, String model, String miles) throws SQLException{
-		String qstr = "INSERT INTO Vehicle ?, ?, ?, ?, ?";
+		String qstr = "INSERT INTO Vehicle ( plate, make, model, miles ) VALUES (?, ?, ?, ?)";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, plate);
 		st.setString(2, make);
@@ -25,7 +25,7 @@ public class Vehicle {
 		return rs;
 	}
 	public static void updateVehicle(Connection conn, String plate, String make, String model, String miles) throws SQLException{
-		String qstr = "UPDATE Service_Center SET";
+		String qstr = "UPDATE Vehicle SET";
 		int[] track = {0,0,0,0};
 		if (!(plate == null) && !(plate.length() == 0)){
 			qstr += " plate = ?,";
@@ -45,6 +45,8 @@ public class Vehicle {
 		}
 		qstr = qstr.substring(0, qstr.length() - 1);
 		qstr += " WHERE plate = ?";
+		//Shows what qstr looks like before populated with data
+		//System.out.println(qstr);
 		PreparedStatement st = conn.prepareStatement(qstr);
 		int count = 1;
 		if(track[0] == 1){

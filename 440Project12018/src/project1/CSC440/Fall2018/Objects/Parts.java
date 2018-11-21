@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class Parts {
 	public static void createPart(Connection conn, String part_name, String make, String price, String warranty) throws SQLException{
-		String qstr = "INSERT INTO Parts ?, ?, ?, ?";
+		String qstr = "INSERT INTO Parts (part_name, make, price, warranty) VALUES ?, ?, ?, ?";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, part_name);
 		st.setString(2, make);

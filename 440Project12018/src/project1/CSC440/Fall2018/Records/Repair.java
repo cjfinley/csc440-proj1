@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class Repair {
 	public static void createRepair(Connection conn, String description, String diagnostic, String fee, String make, String model) throws SQLException{
-		String qstr = "INSERT INTO Repairs ?, ?, ?, ?, ?";
+		String qstr = "INSERT INTO Repairs (description, diagnostic, fee, make, model) VALUES (?, ?, ?, ?, ?)";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, description);
 		st.setString(2, diagnostic);

@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class Distributor {
 	public static void createDistributor(Connection conn, String did, String name) throws SQLException{
-		String qstr = "INSERT INTO Distributors ?, ?";
+		String qstr = "INSERT INTO Distributors ( did, name ) VALUES (?, ?)";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, did);
 		st.setString(2, name);

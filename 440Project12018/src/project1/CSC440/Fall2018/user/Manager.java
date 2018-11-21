@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class Manager {
 	public static void createManager(Connection conn, String role, String eid, String name, String address, String email, String phoneNum, String salary) throws SQLException{
-		String qstr = "INSERT INTO Managers ?, ?, ?, ?, ?, ?, ?";
+		String qstr = "INSERT INTO Managers (role, eid, name, address, email, phone, salary) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, role);
 		st.setString(2, eid);

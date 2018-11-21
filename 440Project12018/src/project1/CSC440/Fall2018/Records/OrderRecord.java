@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class OrderRecord {
 	public static void createOrderRecord(Connection conn, String sid, String orderDate, String expectedDate, String deliveredDate, String origin, String make, String part_name, String qty, String status) throws SQLException{
-		String qstr = "INSERT INTO Ordered ?, ?, ?, ?, ?, ?, ?, ?, ?";
+		String qstr = "INSERT INTO Ordered (sid, order_date, exp_delivery, act_delivery, origin, make, part_name, quantity, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, sid);
 		st.setString(2, orderDate);

@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 import project1.CSC440.Fall2018.Objects.Distributor;
+import project1.CSC440.Fall2018.Objects.Vehicle;
 import project1.CSC440.Fall2018.user.Customer;
 
 
@@ -22,11 +23,24 @@ public class AcmeUI {
 			  
 			//step3 create the statement object  
 			Statement stmt = conn.createStatement();  
-			
-//			ResultSet rs = Distributor.getDistributor(conn, "D0002");
+			//Test class methods to create, update and retrieve items in the database tables
+//			Distributor.createDistributor(conn, "D0004", "D4");
+//			ResultSet rs = Distributor.getDistributor(conn, "D0004");
 //			while(rs.next()){
 //				System.out.printf("Distributor ID: %s\tDistributor Name: %s\n", rs.getString(1), rs.getString(2));
 //			}
+			try{
+				//Vehicle.createVehicle(conn, "XYY-5555", "Nissan", "Crashed", "0000");
+//				ResultSet rs2 = Vehicle.getVehicle(conn, "XYY-5555");
+//				while(rs2.next()){
+//					System.out.printf("Vehicle ID: %s\tVehicle Make: %s\tVehicle Model: %s\tVehicle Milage: %s\n", rs2.getString(1), rs2.getString(2), rs2.getString(3), rs2.getString(4));
+//				}
+//				Vehicle.updateVehicle(conn, "XYY-5555", "", null, "99999");
+//				rs2 = Vehicle.getVehicle(conn, "XYY-5555");
+//				while(rs2.next()){
+//					System.out.printf("Vehicle ID: %s\tVehicle Make: %s\tVehicle Model: %s\tVehicle Milage: %s\n", rs2.getString(1), rs2.getString(2), rs2.getString(3), rs2.getString(4));
+//				}
+
 			boolean programActive = true;
 			while( programActive ){
 				System.out.println("Select choice by entering number.\n");
@@ -44,11 +58,14 @@ public class AcmeUI {
 				}
 				switch(choice){
 				case 1:
-					loginMenu(stmt);
+					loginMenu(conn, stmt);
+					break;
 				case 2:
-					signUpMenu(stmt);
+					signUpMenu(conn, stmt);
+					break;
 				case 3:
 					programActive = false;
+					break;
 				default:
 					System.out.println("Please choose one of the menu options displayed.");
 				}
@@ -59,14 +76,18 @@ public class AcmeUI {
 			conn.close();  
 			in.close();
 			}catch(Exception e){ 
-				System.out.println("Error connecting to remote database: ");
+				System.out.println("Error navigating menu: ");
 				System.out.println(e);
-			}  
+			}
+		}catch(Exception e){ 
+			System.out.println("Error connecting to remote database: ");
+			System.out.println(e);
+		}
 	}
-	public static void loginMenu(Statement st){
+	public static void loginMenu(Connection conn, Statement st){
 		
 	}
-	public static void signUpMenu(Statement st){
+	public static void signUpMenu(Connection conn, Statement st) throws SQLException{
 		System.out.println("Enter Information Below:");
 		System.out.println("Email: ");
 		String email = in.nextLine();
@@ -95,6 +116,7 @@ public class AcmeUI {
 			String cid = null;
 			int cidnum = 0;
 			String maxcid = Customer.getMaxCustomerId(st);
+			System.out.println("MAXCID: " + maxcid);
 			if (maxcid == null){
 				cidnum = 1;
 			} else{
@@ -102,7 +124,7 @@ public class AcmeUI {
 				cidnum++;
 				cid = Integer.toString(cidnum);
 			}
-			Customer.createCustomerAccount(st, cid, name, address, email, phone);
+			Customer.createCustomer(conn, cid, name, address, email, phone);
 		case 2:
 			return;
 		default:

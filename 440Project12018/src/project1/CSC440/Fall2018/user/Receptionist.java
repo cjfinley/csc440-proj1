@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class Receptionist {
 	public static void createReceptionist(Connection conn, String role, String eid, String name, String address, String email, String phoneNum, String salary) throws SQLException{
-		String qstr = "INSERT INTO Receptionist ?, ?, ?, ?, ?, ?, ?";
+		String qstr = "INSERT INTO Receptionist (role, eid, name, address, email, phone, salary) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, role);
 		st.setString(2, eid);

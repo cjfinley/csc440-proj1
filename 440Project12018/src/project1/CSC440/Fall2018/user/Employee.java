@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class Employee {
 	public static void createEmployee(Connection conn, String role, String eid, String name, String address, String email, String phoneNum) throws SQLException{
-		String qstr = "INSERT INTO Employees ?, ?, ?, ?, ?, ?";
+		String qstr = "INSERT INTO Employees (role, eid, name, address, email, phone) VALUES (?, ?, ?, ?, ?, ?)";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, role);
 		st.setString(2, eid);

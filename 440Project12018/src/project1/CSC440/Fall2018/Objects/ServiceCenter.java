@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class ServiceCenter {
 	public static void createServiceCenter(Connection conn, String sid, String name, String address, String phone) throws SQLException{
-		String qstr = "INSERT INTO Service_Center ?, ?, ?, ?";
+		String qstr = "INSERT INTO Service_Center (sid, name, address, phone) VALUES (?, ?, ?, ?)";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, sid);
 		st.setString(2, name);

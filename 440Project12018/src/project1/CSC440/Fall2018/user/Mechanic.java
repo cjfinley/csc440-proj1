@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class Mechanic {
 	public static void createManager(Connection conn, String role, String eid, String name, String address, String email, String phoneNum, String rate) throws SQLException{
-		String qstr = "INSERT INTO Mechanic ?, ?, ?, ?, ?, ?, ?";
+		String qstr = "INSERT INTO Mechanic (role, eid, name, address, email, phone, rate) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, role);
 		st.setString(2, eid);

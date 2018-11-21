@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class CarService {
 	public static void createCarService(Connection conn, String make, String service_type, String milage, String model) throws SQLException{
-		String qstr = "INSERT INTO Car_Services ?, ?, ?, ?";
+		String qstr = "INSERT INTO Car_Services (make, service_type, milage, model) VALUES (?, ?, ?, ?)";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, make);
 		st.setString(2, service_type);

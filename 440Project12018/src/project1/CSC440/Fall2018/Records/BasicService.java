@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class BasicService {
 	public static void createBasicService(Connection conn, String service, String make, String rate, String hours, String model) throws SQLException{
-		String qstr = "INSERT INTO Basic_Service ?, ?, ?, ?, ?";
+		String qstr = "INSERT INTO Basic_Service (service, make, rate, hours, model) VALUES (?, ?, ?, ?, ?)";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, service);
 		st.setString(2, make);
