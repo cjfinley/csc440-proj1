@@ -1,57 +1,69 @@
 package project1.CSC440.Fall2018.Objects;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Vehicle {
-	public static void createVehicle(Statement st, String plate, String make, String model, String year, String purchaseDate){
-		String fields[] = new String[5];
-		fields[0] = plate;
-		fields[1] = make;
-		fields[2] = model;
-		fields[3] = year;
-		fields[4] = purchaseDate;
-		try{
-			st.executeUpdate("INSERT INTO Vehicles", fields);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error creating vehicle");
-		}
+	public static void createVehicle(Connection conn, String plate, String make, String model, String miles) throws SQLException{
+		String qstr = "INSERT INTO Vehicle ?, ?, ?, ?, ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, plate);
+		st.setString(2, make);
+		st.setString(3, model);
+		st.setString(4, miles);
+		st.executeUpdate();
 	}
-	public static ResultSet getVehicle(Statement st, String plate){
-		String qstr = "SELECT * FROM Vehicles WHERE plate = " + plate;
+	public static ResultSet getVehicle(Connection conn, String plate) throws SQLException{
+		String qstr = "SELECT * FROM Vehicle WHERE plate = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, plate);
 		ResultSet rs = null;
-		try{
-			rs = st.executeQuery(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error getting vehicle");
-		}
+		rs = st.executeQuery();
 		return rs;
 	}
-	public static void updateVehicle(Statement st, String plate, String make, String model, String year, String purchaseDate){
-		String qstr = "UPDATE Vehicles SET";
+	public static void updateVehicle(Connection conn, String plate, String make, String model, String miles) throws SQLException{
+		String qstr = "UPDATE Service_Center SET";
+		int[] track = {0,0,0,0};
 		if (!(plate == null) && !(plate.length() == 0)){
-			qstr += " plate = " + plate + ",";
+			qstr += " plate = ?,";
+			track[0] = 1;
 		}
 		if (!(make == null) && !(make.length() == 0)){
-			qstr += " make = " + make + ",";
+			qstr += " make = ?,";
+			track[1] = 1;
 		}
 		if (!(model == null) && !(model.length() == 0)){
-			qstr += " model = " + model + ",";
+			qstr += " model = ?,";
+			track[2] = 1;
 		}
-		if (!(year == null) && !(year.length() == 0)){
-			qstr += " year = " + year + ",";
+		if (!(miles == null) && !(miles.length() == 0)){
+			qstr += " miles = ?,";
+			track[3] = 1;
 		}
-		if (!(purchaseDate == null) && !(purchaseDate.length() == 0)){
-			qstr += " purchaseDate = " + purchaseDate + ",";
-		}
-		
 		qstr = qstr.substring(0, qstr.length() - 1);
-		qstr += " WHERE plate = " + plate;
-		try{
-			st.executeUpdate(qstr);
-		} catch (SQLException e){
-			throw new IllegalArgumentException("Error updating vehicle");
+		qstr += " WHERE plate = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		int count = 1;
+		if(track[0] == 1){
+			st.setString(count, plate);
+			count++;
 		}
+		if(track[1] == 1){
+			st.setString(count, make);
+			count++;
+		}
+		if(track[2] == 1){
+			st.setString(count, model);
+			count++;
+		}
+		if(track[3] == 1){
+			st.setString(count, miles);
+			count++;
+		}
+		st.setString(count, plate);
+		st.executeUpdate();
 	}
 }
