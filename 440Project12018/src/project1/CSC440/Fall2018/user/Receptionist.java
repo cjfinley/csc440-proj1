@@ -27,6 +27,14 @@ public class Receptionist {
 		rs = st.executeQuery();
 		return rs;
 	}
+	public static ResultSet getReceptionistEmployer(Connection conn, String eid) throws SQLException{
+		String qstr = "SELECT * FROM HOSTS WHERE eid = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, eid);
+		ResultSet rs = null;
+		rs = st.executeQuery();
+		return rs;
+	}
 	public static void updateReceptionist(Connection conn, String role, String eid, String name, String address, String email, String phoneNum, String salary) throws SQLException{
 		String qstr = "UPDATE Receptionist SET";
 		int[] track = {0,0,0,0,0,0,0};

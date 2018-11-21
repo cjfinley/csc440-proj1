@@ -106,6 +106,6 @@ public class Customer {
 	}
 	
 	public static String viewServiceHistory(Connection conn, String plate, String service_date, String service_type) throws SQLException {
-		
+		return null;
 	}
 }

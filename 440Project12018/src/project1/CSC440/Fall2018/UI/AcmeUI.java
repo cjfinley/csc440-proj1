@@ -141,7 +141,7 @@ public class AcmeUI {
 						}
 					if(match.next() != false && pw.equals("password")){
 						loggedin = true;
-						//Call receptionist UI
+						AcmeReceptionistUI.receptionistMainMenu(conn, user);
 						break;
 					}
 					try{
