@@ -3,7 +3,7 @@ package project1.CSC440.Fall2018.user;
 import java.sql.*;
 
 public class Mechanic {
-	public static void createManager(Connection conn, String role, String eid, String name, String address, String email, String phoneNum, String rate) throws SQLException{
+	public static void createMechanic(Connection conn, String role, String eid, String name, String address, String email, String phoneNum, String rate) throws SQLException{
 		String qstr = "INSERT INTO Mechanic (role, eid, name, address, email, phone, rate) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, role);
@@ -15,7 +15,7 @@ public class Mechanic {
 		st.setString(7, rate);
 		st.executeUpdate();
 	}
-	public static ResultSet getManager(Connection conn, String eid) throws SQLException{
+	public static ResultSet getMechanic(Connection conn, String eid) throws SQLException{
 		String qstr = "SELECT * FROM Mechanic WHERE eid = ?";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, eid);
@@ -23,7 +23,7 @@ public class Mechanic {
 		rs = st.executeQuery();
 		return rs;
 	}
-	public static void updateManager(Connection conn, String role, String eid, String name, String address, String email, String phoneNum, String rate) throws SQLException{
+	public static void updateMechanic(Connection conn, String role, String eid, String name, String address, String email, String phoneNum, String rate) throws SQLException{
 		String qstr = "UPDATE Mechanic SET";
 		int[] track = {0,0,0,0,0,0,0};
 		if (!(role == null) && !(role.length() == 0)){

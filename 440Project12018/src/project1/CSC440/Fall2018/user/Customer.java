@@ -21,6 +21,14 @@ public class Customer {
 		rs = st.executeQuery();
 		return rs;
 	}
+	public static ResultSet getCustomerByEmail(Connection conn, String email) throws SQLException{
+		String qstr = "SELECT * FROM Customer WHERE email = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, email);
+		ResultSet rs = null;
+		rs = st.executeQuery();
+		return rs;
+	}
 	public static void updateCustomer(Connection conn, String cid, String address, String name, String email, String phone) throws SQLException{
 		String qstr = "UPDATE Customer SET";
 		int[] track = {0,0,0,0,0};

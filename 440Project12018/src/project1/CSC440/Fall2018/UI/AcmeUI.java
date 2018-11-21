@@ -6,6 +6,9 @@ import java.util.Scanner;
 import project1.CSC440.Fall2018.Objects.Distributor;
 import project1.CSC440.Fall2018.Objects.Vehicle;
 import project1.CSC440.Fall2018.user.Customer;
+import project1.CSC440.Fall2018.user.Manager;
+import project1.CSC440.Fall2018.user.Mechanic;
+import project1.CSC440.Fall2018.user.Receptionist;
 
 
 public class AcmeUI {
@@ -22,7 +25,10 @@ public class AcmeUI {
 			"jdbc:oracle:thin:@orca.csc.ncsu.edu:1521:ORCL01","zjohnso","200093381");  
 			  
 			//step3 create the statement object  
-			Statement stmt = conn.createStatement();  
+			Statement stmt = conn.createStatement(); 
+			
+			
+			//*****************TEST STATEMENTS ARE COMMENTED OUT BELOW*********************
 			//Test class methods to create, update and retrieve items in the database tables
 //			Distributor.createDistributor(conn, "D0004", "D4");
 //			ResultSet rs = Distributor.getDistributor(conn, "D0004");
@@ -43,7 +49,7 @@ public class AcmeUI {
 
 			boolean programActive = true;
 			while( programActive ){
-				System.out.println("Select choice by entering number.\n");
+				System.out.println("\nSelect choice by entering number.\n");
 				System.out.println("1.\tLogin");
 				System.out.println("2.\tSign up");
 				System.out.println("3.\tExit");
@@ -71,7 +77,6 @@ public class AcmeUI {
 				}
 				
 			}
-			
 			//step5 close the connection object  
 			conn.close();  
 			in.close();
@@ -85,22 +90,78 @@ public class AcmeUI {
 		}
 	}
 	public static void loginMenu(Connection conn, Statement st){
-		
+		boolean loggedin = false;
+		while(!loggedin){
+			System.out.print("Enter Login Info (Username for employees is ID #, Customers use their email address): ");
+			System.out.print("Username: ");
+			String user = in.nextLine();
+			System.out.print("Password: ");
+			String pw = in.nextLine();
+			System.out.println("\nSelect your choice by entering the corresponding number.\n");
+			System.out.println("1.\tLog In");
+			System.out.println("2.\tGo Back");
+			//Handles user input for menu options
+			String s = in.nextLine();
+			int choice = 0;
+			try{
+				choice = Integer.parseInt(s);
+			} catch(NumberFormatException e){
+				System.out.println("Is not a valid option, enter a new one.");
+			}
+			switch(choice){
+			case 1:
+				ResultSet match = null;
+				try {
+					match = Customer.getCustomerByEmail(conn, user);
+					if(match.next() != false && pw == "password"){
+						loggedin = true;
+						//Call customer UI
+						break;
+					}
+					match = Manager.getManager(conn, user);
+					if(match.next() != false && pw == "password"){
+						loggedin = true;
+						//Call manager UI
+						break;
+					}
+					match = Receptionist.getReceptionist(conn, user);
+					if(match.next() != false && pw == "password"){
+						loggedin = true;
+						//Call receptionist UI
+						break;
+					}
+					match = Mechanic.getMechanic(conn, user);
+					if(match.next() != false && pw == "password"){
+						loggedin = true;
+						//Call mechanic UI
+						break;
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			case 2:
+				return;
+			default:
+				System.out.println("Please choose one of the menu options displayed.");
+			}
+		}
 	}
 	public static void signUpMenu(Connection conn, Statement st) throws SQLException{
 		System.out.println("Enter Information Below:");
-		System.out.println("Email: ");
+		System.out.print("Email: ");
 		String email = in.nextLine();
 		//System.out.println("Password: ");
 		//String password = info.nextLine();
-		System.out.println("Name: ");
+		System.out.print("Name: ");
 		String name = in.nextLine();
-		System.out.println("Address: ");
+		System.out.print("Address: ");
 		String address = in.nextLine();
-		System.out.println("Phone Number: ");
+		System.out.print("Phone Number: ");
 		String phone = in.nextLine();
 		
-		System.out.println("Select choice by entering number.\n");
+		System.out.println("\nSelect your choice by entering the corresponding number.\n");
 		System.out.println("1.\tSign up");
 		System.out.println("2.\tGo Back");
 		//Handles user input for menu options
@@ -116,7 +177,8 @@ public class AcmeUI {
 			String cid = null;
 			int cidnum = 0;
 			String maxcid = Customer.getMaxCustomerId(st);
-			System.out.println("MAXCID: " + maxcid);
+			//Checking validity of query since not using prepared statement
+			//System.out.println("MAXCID: " + maxcid);
 			if (maxcid == null){
 				cidnum = 1;
 			} else{
@@ -125,6 +187,7 @@ public class AcmeUI {
 				cid = Integer.toString(cidnum);
 			}
 			Customer.createCustomer(conn, cid, name, address, email, phone);
+			break;
 		case 2:
 			return;
 		default:
