@@ -2,6 +2,9 @@ package project1.CSC440.Fall2018.user;
 
 import java.sql.*;
 
+import project1.CSC440.Fall2018.Objects.Vehicle;
+import project1.CSC440.Fall2018.Records.ServiceHistory;
+
 public class Customer {
 	public static void createCustomer(Connection conn, String cid, String address, String name, String email, String phone) throws SQLException{
 		String qstr = "INSERT INTO Customer (cid, address, name, email, phone) VALUES (?, ?, ?, ?, ?)";
@@ -89,19 +92,20 @@ public class Customer {
 		return maxcid;
 	}
 	
-	public static String viewServiceHistory() {
-		return null;
+	// adds a user/vehicle pair to the vehicle table and the owns table
+	public static void registerVehicle( Connection conn, String cid, String plate, String make, String model, String miles, String since  ) throws SQLException{
+		// insert the vehicle into the vehicle table
+		Vehicle.createVehicle(conn, plate, make, model, miles);
+		// add the vehicle and user pair to the owns table
+		String qstr = "INSERT INTO OWNS ( cid, plate, since ) VALUES (?, ?, ?)";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, cid);
+		st.setString(2, plate);
+		st.setString(3, since);
+		st.executeUpdate();
 	}
 	
-	public static void scheduleService() {
+	public static String viewServiceHistory(Connection conn, String plate, String service_date, String service_type) throws SQLException {
 		
-	}
-	
-	public static void rescheduleService() {
-		
-	}
-	
-	public static String viewInvoice() {
-		return null;
 	}
 }
