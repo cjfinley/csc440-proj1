@@ -94,6 +94,7 @@ public class Customer {
 				retVal += "     No vehicles registered\n";
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new IllegalArgumentException("Error viewing profile");
 		}
 		return retVal;
@@ -136,6 +137,30 @@ public class Customer {
 				throw new IllegalArgumentException("Error updating customer phone");
 			}
 		}
+	}
+	public static String getMaxCustomerId(Statement st){
+		String query = "Select MAX(cid) As mcid From Customer";
+		ResultSet rs = null;
+		String maxcid = null;
+		try {
+			rs = st.executeQuery(query);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			rs.next();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			maxcid = rs.getString("mcid");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return maxcid;
 	}
 	
 	public static String viewServiceHistory() {
