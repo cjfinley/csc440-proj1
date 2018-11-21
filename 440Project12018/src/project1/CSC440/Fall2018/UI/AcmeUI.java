@@ -117,9 +117,11 @@ public class AcmeUI {
 					} catch (SQLSyntaxErrorException e){
 						//Catches error thrown when trying to look up employees by an email
 					}
-					if(match.next() != false && pw == "password"){
+					if(match.next() != false && pw.equals("password")){
 						loggedin = true;
-						//Call customer ui
+						System.out.println(match.getString("email"));
+						System.out.println(match.getString("name"));
+						AcmeCustomerUI.customerMainMenu(conn, st, user);
 						break;
 					}
 					try{
@@ -127,7 +129,7 @@ public class AcmeUI {
 						} catch (SQLSyntaxErrorException e){
 							//Catches error thrown when trying to look up employees by an email
 						}
-					if(match.next() != false && pw == "password"){
+					if(match.next() != false && pw.equals("password")){
 						loggedin = true;
 						//Call manager UI
 						break;
@@ -137,7 +139,7 @@ public class AcmeUI {
 						} catch (SQLSyntaxErrorException e){
 							//Catches error thrown when trying to look up employees by an email
 						}
-					if(match.next() != false && pw == "password"){
+					if(match.next() != false && pw.equals("password")){
 						loggedin = true;
 						//Call receptionist UI
 						break;
@@ -147,7 +149,7 @@ public class AcmeUI {
 						} catch (SQLSyntaxErrorException e){
 							//Catches error thrown when trying to look up employees by an email
 						}
-					if(match.next() != false && pw == "password"){
+					if(match.next() != false && pw.equals("password")){
 						loggedin = true;
 						//Call mechanic UI
 						break;
