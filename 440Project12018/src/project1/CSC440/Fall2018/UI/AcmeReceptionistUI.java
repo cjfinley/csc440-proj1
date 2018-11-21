@@ -246,7 +246,7 @@ public static Scanner in = new Scanner(System.in);
 			String email = in.nextLine();
 			System.out.print("License Plate: ");
 			String plate = in.nextLine();
-			System.out.print("Purchase Date: ");
+			System.out.print("Purchase Date (DD/MMM/YY): ");
 			String purchase_date = in.nextLine();
 			System.out.print("Make: ");
 			String make = in.nextLine();
@@ -279,7 +279,7 @@ public static Scanner in = new Scanner(System.in);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-				
+				keepGoing = false;
 				break;
 			case 2:
 				keepGoing = false;
@@ -288,5 +288,39 @@ public static Scanner in = new Scanner(System.in);
 			}
 		}	
 	}
-
+	public static void getServiceHistory(Connection conn, String user){
+		boolean keepGoing = true;
+		while( keepGoing ){
+			System.out.print("Enter customer email address: ");
+			String cEmail = in.nextLine();
+			String cid = null;
+				try {
+					ResultSet r = Customer.getCustomerByEmail(conn, cEmail);
+					while(r != null && r.next()){
+						cid = r.getString("cid");
+					}
+					
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				
+				
+				System.out.println("\nWelcome!\nSelect your choice by entering the corresponding number.");
+				System.out.println("1.\tGo Back");
+				//Handles user input for menu options
+				String sa = in.nextLine();
+				int choice1 = 0;
+				try{
+					choice1 = Integer.parseInt(sa);
+				} catch(NumberFormatException e){
+					System.out.println("Is not a valid option, enter a new one.");
+				}
+				switch(choice1){
+				case 1:
+					keepGoing = false;
+				default:
+					System.out.println("Please choose one of the menu options displayed.");
+				}
+			}
+	}
 }
