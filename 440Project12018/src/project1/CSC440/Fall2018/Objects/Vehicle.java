@@ -24,6 +24,22 @@ public class Vehicle {
 		rs = st.executeQuery();
 		return rs;
 	}
+	public static ResultSet getPlatesForOwner(Connection conn, String cid) throws SQLException{
+		String qstr = "SELECT * FROM OWNS WHERE cid = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, cid);
+		ResultSet rs = null;
+		rs = st.executeQuery();
+		return rs;
+	}
+	public static void registerVehicle(Connection conn, String cid, String plate, String since) throws SQLException{
+		String qstr = "INSERT INTO OWNS ( cid, plate, since ) VALUES (?, ?, ?)";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, cid);
+		st.setString(2, plate);
+		st.setString(3, since);
+		st.executeUpdate();
+	}
 	public static void updateVehicle(Connection conn, String plate, String make, String model, String miles) throws SQLException{
 		String qstr = "UPDATE Vehicle SET";
 		int[] track = {0,0,0,0};

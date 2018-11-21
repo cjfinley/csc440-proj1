@@ -49,7 +49,7 @@ public class AcmeUI {
 
 			boolean programActive = true;
 			while( programActive ){
-				System.out.println("\nSelect choice by entering number.\n");
+				System.out.println("\nSelect choice by entering number.");
 				System.out.println("1.\tLogin");
 				System.out.println("2.\tSign up");
 				System.out.println("3.\tExit");
@@ -97,7 +97,7 @@ public class AcmeUI {
 			String user = in.nextLine();
 			System.out.print("Password: ");
 			String pw = in.nextLine();
-			System.out.println("\nSelect your choice by entering the corresponding number.\n");
+			System.out.println("\nSelect your choice by entering the corresponding number.");
 			System.out.println("1.\tLog In");
 			System.out.println("2.\tGo Back");
 			//Handles user input for menu options
@@ -178,7 +178,7 @@ public class AcmeUI {
 		System.out.print("Phone Number: ");
 		String phone = in.nextLine();
 		
-		System.out.println("\nSelect your choice by entering the corresponding number.\n");
+		System.out.println("\nSelect your choice by entering the corresponding number.");
 		System.out.println("1.\tSign up");
 		System.out.println("2.\tGo Back");
 		//Handles user input for menu options
