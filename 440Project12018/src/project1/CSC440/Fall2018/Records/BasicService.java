@@ -1,57 +1,78 @@
 package project1.CSC440.Fall2018.Records;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class BasicService {
-	public static void createBasicService(Statement st, String service, String make, String rate, String hours, String model){
-		String fields[] = new String[5];
-		fields[0] = service;
-		fields[1] = make;
-		fields[2] = rate;
-		fields[3] = hours;
-		fields[4] = model;
-		try{
-			st.executeUpdate("INSERT INTO Basic_Service", fields);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error creating basic service");
-		}
+	public static void createBasicService(Connection conn, String service, String make, String rate, String hours, String model) throws SQLException{
+		String qstr = "INSERT INTO Basic_Service ?, ?, ?, ?, ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, service);
+		st.setString(2, make);
+		st.setString(3, rate);
+		st.setString(4, hours);
+		st.setString(5, model);
+		st.executeUpdate();
 	}
-	public static ResultSet getBasicService(Statement st, String service){
-		String qstr = "SELECT * FROM Basic_Service WHERE service = " + service;
+	public static ResultSet getBasicService(Connection conn, String service) throws SQLException{
+		String qstr = "SELECT * FROM Basic_Service WHERE service = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, service);
 		ResultSet rs = null;
-		try{
-			rs = st.executeQuery(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error getting basic service");
-		}
+		rs = st.executeQuery();
 		return rs;
 	}
-	public static void updateBasicService(Statement st, String service, String make, String rate, String hours, String model){
+	public static void updateBasicService(Connection conn, String service, String make, String rate, String hours, String model) throws SQLException{
 		String qstr = "UPDATE Basic_Service SET";
+		int[] track = {0,0,0,0,0};
 		if (!(service == null) && !(service.length() == 0)){
-			qstr += " service = " + service + ",";
+			qstr += " service = ?,";
+			track[0] = 1;
 		}
 		if (!(make == null) && !(make.length() == 0)){
-			qstr += " make = " + make + ",";
+			qstr += " make = ?,";
+			track[1] = 1;
 		}
 		if (!(rate == null) && !(rate.length() == 0)){
-			qstr += " rate = " + rate + ",";
+			qstr += " rate = ?,";
+			track[2] = 1;
 		}
 		if (!(hours == null) && !(hours.length() == 0)){
-			qstr += " hours = " + hours + ",";
+			qstr += " hours = ?,";
+			track[3] = 1;
 		}
 		if (!(model == null) && !(model.length() == 0)){
-			qstr += " model = " + model + ",";
+			qstr += " model = ?,";
+			track[4] = 1;
 		}
-		
 		qstr = qstr.substring(0, qstr.length() - 1);
-		qstr += " WHERE service = " + service;
-		try{
-			st.executeUpdate(qstr);
-		} catch (SQLException e){
-			throw new IllegalArgumentException("Error updating basic service");
+		qstr += " WHERE service = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		int count = 1;
+		if(track[0] == 1){
+			st.setString(count, service);
+			count++;
 		}
+		if(track[1] == 1){
+			st.setString(count, make);
+			count++;
+		}
+		if(track[2] == 1){
+			st.setString(count, rate);
+			count++;
+		}
+		if(track[3] == 1){
+			st.setString(count, hours);
+			count++;
+		}
+		if(track[4] == 1){
+			st.setString(count, model);
+			count++;
+		}
+		st.setString(count, service);
+		st.executeUpdate();
 	}
 }

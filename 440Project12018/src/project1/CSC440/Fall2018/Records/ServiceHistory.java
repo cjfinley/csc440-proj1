@@ -1,65 +1,102 @@
 package project1.CSC440.Fall2018.Records;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ServiceHistory {
-	public static void createServiceHistory(Statement st, String plate, String service_type, String make, String model, String service_date, String start_time, String mechanic_name){
-		String fields[] = new String[7];
-		fields[0] = plate;
-		fields[1] = service_type;
-		fields[2] = make;
-		fields[3] = model;
-		fields[4] = service_date;
-		fields[5] = start_time;
-		fields[6] = mechanic_name;
-		try{
-			st.executeUpdate("INSERT INTO Service_History", fields);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error creating service history");
-		}
+	public static void createServiceHistory(Connection conn, String plate, String service_type, String make, String model, String service_date, String start_time, String mechanic_name) throws SQLException{
+		String qstr = "INSERT INTO Service_History ?, ?, ?, ?, ?, ?, ?, ?, ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, plate);
+		st.setString(2, service_type);
+		st.setString(3, make);
+		st.setString(4, model);
+		st.setString(5, service_date);
+		st.setString(6, start_time);
+		st.setString(7, mechanic_name);
+		st.executeUpdate();
 	}
-	public static ResultSet getServiceHistory(Statement st, String plate){
-		String qstr = "SELECT * FROM Service_History WHERE plate = " + plate;
+	public static ResultSet getServiceHistory(Connection conn, String plate, String service_date, String service_type) throws SQLException{
+		String qstr = "SELECT * FROM Service_History WHERE plate = ? AND service_date = ? AND service_type = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, plate);
+		st.setString(2, service_date);
+		st.setString(3, service_type);
 		ResultSet rs = null;
-		try{
-			rs = st.executeQuery(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error getting service history");
-		}
+		rs = st.executeQuery();
 		return rs;
 	}
-	public static void updateBasicService(Statement st, String plate, String service_type, String make, String model, String service_date, String start_time, String mechanic_name){
+	public static void updateServiceHistory(Connection conn, String plate, String service_type, String make, String model, String service_date, String start_time, String mechanic_name) throws SQLException{
 		String qstr = "UPDATE Service_History SET";
+		int[] track = {0,0,0,0,0,0,0};
 		if (!(plate == null) && !(plate.length() == 0)){
-			qstr += " plate = " + plate + ",";
+			qstr += " plate = ?,";
+			track[0] = 1;
 		}
 		if (!(service_type == null) && !(service_type.length() == 0)){
-			qstr += " service_type = " + service_type + ",";
+			qstr += " service_type = ?,";
+			track[1] = 1;
 		}
 		if (!(make == null) && !(make.length() == 0)){
-			qstr += " make = " + make + ",";
+			qstr += " make = ?,";
+			track[2] = 1;
 		}
 		if (!(model == null) && !(model.length() == 0)){
-			qstr += " model = " + model + ",";
+			qstr += " model = ?,";
+			track[3] = 1;
 		}
 		if (!(service_date == null) && !(service_date.length() == 0)){
-			qstr += " service_date = " + service_date + ",";
+			qstr += " service_date = ?,";
+			track[4] = 1;
 		}
 		if (!(start_time == null) && !(start_time.length() == 0)){
-			qstr += " start_time = " + start_time + ",";
+			qstr += " start_time = ?,";
+			track[5] = 1;
 		}
 		if (!(mechanic_name == null) && !(mechanic_name.length() == 0)){
-			qstr += " mechanic_name = " + mechanic_name + ",";
+			qstr += " mechanic_name = ?,";
+			track[6] = 1;
 		}
-		
 		qstr = qstr.substring(0, qstr.length() - 1);
-		qstr += " WHERE plate = " + plate;
-		try{
-			st.executeUpdate(qstr);
-		} catch (SQLException e){
-			throw new IllegalArgumentException("Error updating service history");
+		qstr += " WHERE plate = ? AND service_date = ? AND service_type = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		int count = 1;
+		if(track[0] == 1){
+			st.setString(count, plate);
+			count++;
 		}
+		if(track[1] == 1){
+			st.setString(count, service_type);
+			count++;
+		}
+		if(track[2] == 1){
+			st.setString(count, make);
+			count++;
+		}
+		if(track[3] == 1){
+			st.setString(count, model);
+			count++;
+		}
+		if(track[4] == 1){
+			st.setString(count, service_date);
+			count++;
+		}
+		if(track[5] == 1){
+			st.setString(count, start_time);
+			count++;
+		}
+		if(track[6] == 1){
+			st.setString(count, mechanic_name);
+			count++;
+		}
+		st.setString(count, plate);
+		count++;
+		st.setString(count, service_date);
+		count++;
+		st.setString(count, service_type);
+		st.executeUpdate();
 	}
 }

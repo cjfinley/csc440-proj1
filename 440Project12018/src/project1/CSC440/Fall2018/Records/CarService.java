@@ -1,53 +1,72 @@
 package project1.CSC440.Fall2018.Records;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class CarService {
-	public static void createCarService(Statement st, String make, String service_type, String milage, String model){
-		String fields[] = new String[5];
-		fields[0] = make;
-		fields[1] = service_type;
-		fields[2] = milage;
-		fields[3] = model;
-		try{
-			st.executeUpdate("INSERT INTO Car_Services", fields);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error creating car service");
-		}
+	public static void createCarService(Connection conn, String make, String service_type, String milage, String model) throws SQLException{
+		String qstr = "INSERT INTO Car_Services ?, ?, ?, ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, make);
+		st.setString(2, service_type);
+		st.setString(3, milage);
+		st.setString(4, model);
+		st.executeUpdate();
 	}
-	public static ResultSet getCarService(Statement st, String service_type){
-		String qstr = "SELECT * FROM Car_Services WHERE service_type = " + service_type;
+	public static ResultSet getCarService(Connection conn, String service_type, String milage) throws SQLException{
+		String qstr = "SELECT * FROM Car_Services WHERE service_type = ? AND milage = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, service_type);
+		st.setString(1, milage);
 		ResultSet rs = null;
-		try{
-			rs = st.executeQuery(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error getting car service");
-		}
+		rs = st.executeQuery();
 		return rs;
 	}
-	public static void updateCarService(Statement st, String make, String service_type, String milage, String model){
+	public static void updateCarService(Connection conn, String make, String service_type, String milage, String model) throws SQLException{
 		String qstr = "UPDATE Car_Services SET";
+		int[] track = {0,0,0,0};
 		if (!(make == null) && !(make.length() == 0)){
-			qstr += " make = " + make + ",";
+			qstr += " make = ?,";
+			track[0] = 1;
 		}
 		if (!(service_type == null) && !(service_type.length() == 0)){
-			qstr += " service_type = " + service_type + ",";
+			qstr += " service_type = ?,";
+			track[1] = 1;
 		}
 		if (!(milage == null) && !(milage.length() == 0)){
-			qstr += " milage = " + milage + ",";
+			qstr += " milage = ?,";
+			track[2] = 1;
 		}
 		if (!(model == null) && !(model.length() == 0)){
-			qstr += " model = " + model + ",";
+			qstr += " model = ?,";
+			track[3] = 1;
 		}
-		
 		qstr = qstr.substring(0, qstr.length() - 1);
-		qstr += " WHERE service_type = " + service_type;
-		try{
-			st.executeUpdate(qstr);
-		} catch (SQLException e){
-			throw new IllegalArgumentException("Error updating car service");
+		qstr += " WHERE service_type = ? AND milage = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		int count = 1;
+		if(track[0] == 1){
+			st.setString(count, make);
+			count++;
 		}
+		if(track[1] == 1){
+			st.setString(count, service_type);
+			count++;
+		}
+		if(track[2] == 1){
+			st.setString(count, milage);
+			count++;
+		}
+		if(track[3] == 1){
+			st.setString(count, model);
+			count++;
+		}
+		st.setString(count, service_type);
+		count++;
+		st.setString(count, milage);
+		st.executeUpdate();
 	}
 }
