@@ -72,6 +72,7 @@ public class AcmeCustomerUI {
 			switch(choice){
 			case 1:
 				AcmeCustomerUI.viewProfile(conn);
+				break;
 			case 2:
 				AcmeCustomerUI.updateProfile(conn);
 				break;
@@ -108,6 +109,7 @@ public class AcmeCustomerUI {
 				retStr += "     " + rs.getString("email") + ", " + rs.getString("phone");
 			} catch (SQLException e1) {
 				System.out.println("Error fetching customer profile: AcmeCustomerUI.viewProfile.java");
+				return;
 			}
 			System.out.println(retStr);
 			
@@ -179,6 +181,8 @@ public class AcmeCustomerUI {
 				} catch ( SQLException e ) {
 					System.out.println("Error updating phone: AcmeCustomerUI.updateProfile.java");
 				}
+			case 5:
+				return;
 			default:
 				System.out.println("Invalid inpu: please select one of the valid optoins.");
 			}
