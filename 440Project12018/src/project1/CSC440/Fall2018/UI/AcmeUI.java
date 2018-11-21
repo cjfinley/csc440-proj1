@@ -92,7 +92,7 @@ public class AcmeUI {
 	public static void loginMenu(Connection conn, Statement st){
 		boolean loggedin = false;
 		while(!loggedin){
-			System.out.print("Enter Login Info (Username for employees is ID #, Customers use their email address): ");
+			System.out.print("Enter Login Info (Username for employees is ID #, Customers use their email address): \n");
 			System.out.print("Username: ");
 			String user = in.nextLine();
 			System.out.print("Password: ");
@@ -112,33 +112,48 @@ public class AcmeUI {
 			case 1:
 				ResultSet match = null;
 				try {
+					try{
 					match = Customer.getCustomerByEmail(conn, user);
+					} catch (SQLSyntaxErrorException e){
+						//Catches error thrown when trying to look up employees by an email
+					}
 					if(match.next() != false && pw == "password"){
 						loggedin = true;
 						//Call customer UI
 						break;
 					}
-					match = Manager.getManager(conn, user);
+					try{
+						match = Manager.getManager(conn, user);
+						} catch (SQLSyntaxErrorException e){
+							//Catches error thrown when trying to look up employees by an email
+						}
 					if(match.next() != false && pw == "password"){
 						loggedin = true;
 						//Call manager UI
 						break;
 					}
-					match = Receptionist.getReceptionist(conn, user);
+					try{
+						match = Receptionist.getReceptionist(conn, user);
+						} catch (SQLSyntaxErrorException e){
+							//Catches error thrown when trying to look up employees by an email
+						}
 					if(match.next() != false && pw == "password"){
 						loggedin = true;
 						//Call receptionist UI
 						break;
 					}
-					match = Mechanic.getMechanic(conn, user);
+					try{
+						match = Mechanic.getMechanic(conn, user);
+						} catch (SQLSyntaxErrorException e){
+							//Catches error thrown when trying to look up employees by an email
+						}
 					if(match.next() != false && pw == "password"){
 						loggedin = true;
 						//Call mechanic UI
 						break;
 					}
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.print("Incorrect username or password.\n");
 				}
 				break;
 			case 2:
