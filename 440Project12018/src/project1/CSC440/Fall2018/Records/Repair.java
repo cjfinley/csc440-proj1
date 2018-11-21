@@ -18,7 +18,7 @@ public class Repair {
 			throw new IllegalArgumentException("Error creating repair");
 		}
 	}
-	static ResultSet getBasicService(Statement st, String description){
+	public static ResultSet getBasicService(Statement st, String description){
 		String qstr = "SELECT * FROM Repairs WHERE description = " + description;
 		ResultSet rs = null;
 		try{

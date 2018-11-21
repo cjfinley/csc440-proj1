@@ -18,7 +18,7 @@ public class BasicService {
 			throw new IllegalArgumentException("Error creating basic service");
 		}
 	}
-	static ResultSet getBasicService(Statement st, String service){
+	public static ResultSet getBasicService(Statement st, String service){
 		String qstr = "SELECT * FROM Basic_Service WHERE service = " + service;
 		ResultSet rs = null;
 		try{

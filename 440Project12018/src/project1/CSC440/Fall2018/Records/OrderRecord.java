@@ -22,7 +22,7 @@ public class OrderRecord {
 			throw new IllegalArgumentException("Error creating order record");
 		}
 	}
-	static ResultSet getOrderRecord(Statement st, String oid){
+	public static ResultSet getOrderRecord(Statement st, String oid){
 		String qstr = "SELECT * FROM Ordered WHERE oid = " + oid;
 		ResultSet rs = null;
 		try{

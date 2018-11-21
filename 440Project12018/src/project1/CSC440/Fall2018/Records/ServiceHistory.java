@@ -20,7 +20,7 @@ public class ServiceHistory {
 			throw new IllegalArgumentException("Error creating service history");
 		}
 	}
-	static ResultSet getServiceHistory(Statement st, String plate){
+	public static ResultSet getServiceHistory(Statement st, String plate){
 		String qstr = "SELECT * FROM Service_History WHERE plate = " + plate;
 		ResultSet rs = null;
 		try{

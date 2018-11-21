@@ -15,7 +15,7 @@ public class Distributor {
 			throw new IllegalArgumentException("Error creating distributor");
 		}
 	}
-	static ResultSet getDistributor(Statement st, String did){
+	public static ResultSet getDistributor(Statement st, String did){
 		String qstr = "SELECT * FROM Distributors WHERE did = " + did;
 		ResultSet rs = null;
 		try{

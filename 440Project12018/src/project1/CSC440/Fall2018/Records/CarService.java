@@ -17,7 +17,7 @@ public class CarService {
 			throw new IllegalArgumentException("Error creating car service");
 		}
 	}
-	static ResultSet getCarService(Statement st, String service_type){
+	public static ResultSet getCarService(Statement st, String service_type){
 		String qstr = "SELECT * FROM Car_Services WHERE service_type = " + service_type;
 		ResultSet rs = null;
 		try{

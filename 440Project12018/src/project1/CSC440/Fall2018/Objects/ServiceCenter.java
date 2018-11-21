@@ -15,7 +15,7 @@ public class ServiceCenter {
 			throw new IllegalArgumentException("Error creating service center");
 		}
 	}
-	static ResultSet getServiceCenter(Statement st, String sid){
+	public static ResultSet getServiceCenter(Statement st, String sid){
 		String qstr = "SELECT * FROM Service_Center WHERE sid = " + sid;
 		ResultSet rs = null;
 		try{

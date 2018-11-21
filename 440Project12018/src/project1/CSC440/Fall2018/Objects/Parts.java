@@ -15,7 +15,7 @@ public class Parts {
 			throw new IllegalArgumentException("Error creating part");
 		}
 	}
-	static ResultSet getPart(Statement st, String part_name){
+	public static ResultSet getPart(Statement st, String part_name){
 		String qstr = "SELECT * FROM Parts WHERE part_name = " + part_name;
 		ResultSet rs = null;
 		try{

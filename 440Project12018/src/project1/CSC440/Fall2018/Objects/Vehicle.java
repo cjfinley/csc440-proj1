@@ -18,7 +18,7 @@ public class Vehicle {
 			throw new IllegalArgumentException("Error creating vehicle");
 		}
 	}
-	static ResultSet getVehicle(Statement st, String plate){
+	public static ResultSet getVehicle(Statement st, String plate){
 		String qstr = "SELECT * FROM Vehicles WHERE plate = " + plate;
 		ResultSet rs = null;
 		try{
