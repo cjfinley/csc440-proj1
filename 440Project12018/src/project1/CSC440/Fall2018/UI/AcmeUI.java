@@ -119,7 +119,7 @@ public class AcmeUI {
 					}
 					if(match.next() != false && pw == "password"){
 						loggedin = true;
-						//Call customer UI
+						//Call customer ui
 						break;
 					}
 					try{
