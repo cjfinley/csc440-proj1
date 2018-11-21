@@ -71,7 +71,7 @@ public class AcmeCustomerUI {
 			}
 			switch(choice){
 			case 1:
-				AcmeCustomerUI.viewProfile(conn);
+				AcmeCustomerUI.viewProfile(conn, user);
 				break;
 			case 2:
 				AcmeCustomerUI.updateProfile(conn);
@@ -84,52 +84,56 @@ public class AcmeCustomerUI {
 		}
 	}
 	
-	public static void viewProfile(Connection conn) {
+	public static void viewProfile(Connection conn, String user) {
 		boolean keepGoing = true;
 		while( keepGoing ){
-			ResultSet rs = null;
-			//loops until a valid email is input
-			while ( true ) {
-				System.out.print("Please enter your email or exit: ");
-				String email = in.nextLine();
-				if ( email != null && email.equals("exit")) {
-					return;
-				}
+			System.out.print("Enter customer email address: ");
+			String cEmail = in.nextLine();
+			String cid = null;
 				try {
-					rs = Customer.getCustomerByEmail(conn, email);
-					break;
+					ResultSet r = Customer.getCustomerByEmail(conn, cEmail);
+					while(r != null && r.next()){
+						cid = r.getString("cid");
+						System.out.printf("Customer ID: %s%n", cid);
+						System.out.printf("Name: %s%n", r.getString("name"));
+						System.out.printf("Address: %s%n", r.getString("address"));
+						System.out.printf("Email: %s%n", r.getString("email"));
+						System.out.printf("Phone Number: %s%n", r.getString("phone"));
+					}
+					ResultSet r2 = Vehicle.getPlatesForOwner(conn, cid);
+					while(r2 != null && r2.next()){
+						String plate = r2.getString("plate");
+						System.out.printf("%nOwned since: %s%n", r2.getString("since"));
+						ResultSet r3 = Vehicle.getVehicle(conn, plate);
+						while(r3 != null && r3.next()){
+							System.out.printf("Plate: %s%n", r3.getString("plate"));
+							System.out.printf("Make: %s%n", r3.getString("make"));
+							System.out.printf("Model: %s%n", r3.getString("model"));
+							System.out.printf("Miles: %s%n", r3.getString("miles"));
+						}
+					}
 				} catch (SQLException e1) {
-					System.out.println("Error finding profile.");
-				}	
+					e1.printStackTrace();
+				}
+				
+				
+				System.out.println("\nWelcome!\nSelect your choice by entering the corresponding number.");
+				System.out.println("1.\tGo Back");
+				//Handles user input for menu options
+				String sa = in.nextLine();
+				int choice1 = 0;
+				try{
+					choice1 = Integer.parseInt(sa);
+				} catch(NumberFormatException e){
+					System.out.println("Is not a valid option, enter a new one.");
+				}
+				switch(choice1){
+				case 1:
+					keepGoing = false;
+				default:
+					System.out.println("Please choose one of the menu options displayed.");
+				}
 			}
-			String retStr = null;
-			try {
-				retStr += rs.getString("cid") + ": " + rs.getString("name")  + "\n";
-				retStr += "     " + rs.getString("address") + "\n";
-				retStr += "     " + rs.getString("email") + ", " + rs.getString("phone");
-			} catch (SQLException e1) {
-				System.out.println("Error fetching customer profile: AcmeCustomerUI.viewProfile.java");
-				return;
-			}
-			System.out.println(retStr);
-			
-			System.out.println("\nWelcome Customer!\nSelect your choice by entering the corresponding number.\n");
-			System.out.println("1.\tGo Back");
-			//Handles user input for menu options
-			String sa = in.nextLine();
-			int choice1 = 0;
-			try{
-				choice1 = Integer.parseInt(sa);
-			} catch(NumberFormatException e){
-				System.out.println("Is not a valid option, enter a new one.");
-			}
-			switch(choice1){
-			case 1:
-				keepGoing = false;
-			default:
-				System.out.println("Please choose one of the menu options displayed.");
-			}
-		}
 	}
 	
 	public static void updateProfile(Connection conn) {
@@ -157,6 +161,7 @@ public class AcmeCustomerUI {
 				} catch (SQLException e) {
 					System.out.println("Error updating name: AcmeCustomerUI.updateProfile.java");
 				}
+				break;
 			case 2:
 				System.out.print("Address: ");
 				String address = in.nextLine();
@@ -165,6 +170,7 @@ public class AcmeCustomerUI {
 				} catch (SQLException e) {
 					System.out.println("Error updating address: AcmeCustomerUI.updateProfile.java");
 				}
+				break;
 			case 3:
 				System.out.print("Phone Number: ");
 				String phone = in.nextLine();
@@ -173,6 +179,7 @@ public class AcmeCustomerUI {
 				} catch ( SQLException e ) {
 					System.out.println("Error updating phone: AcmeCustomerUI.updateProfile.java");
 				}
+				break;
 			case 4:
 				System.out.print("Email: ");
 				String email = in.nextLine();
@@ -181,6 +188,7 @@ public class AcmeCustomerUI {
 				} catch ( SQLException e ) {
 					System.out.println("Error updating phone: AcmeCustomerUI.updateProfile.java");
 				}
+				break;
 			case 5:
 				return;
 			default:
