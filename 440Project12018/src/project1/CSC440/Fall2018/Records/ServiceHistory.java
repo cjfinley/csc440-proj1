@@ -1,10 +1,10 @@
 package project1.CSC440.Fall2018.Records;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class ServiceHistory {
 	public static void createServiceHistory(Connection conn, String plate, String service_type, String make, String model, String service_date, String start_time, String mechanic_name) throws SQLException{
@@ -25,7 +25,7 @@ public class ServiceHistory {
 		st.setString(1, plate);
 		st.setString(2, service_date);
 		st.setString(3, service_type);
-		ResultSet rs = null;
+		ResultSet rs = null;	
 		rs = st.executeQuery();
 		return rs;
 	}
