@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class ServiceHistory {
 	public static void createServiceHistory(Connection conn, String plate, String service_type, String make, String model, String service_date, String start_time, String mechanic_name) throws SQLException{
-		String qstr = "INSERT INTO Service_History ?, ?, ?, ?, ?, ?, ?, ?, ?";
+		String qstr = "INSERT INTO Service_History ?, ?, ?, ?, ?, ?, ?";
 		PreparedStatement st = conn.prepareStatement(qstr);
 		st.setString(1, plate);
 		st.setString(2, service_type);

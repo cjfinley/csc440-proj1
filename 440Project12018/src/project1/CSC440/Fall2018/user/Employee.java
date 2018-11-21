@@ -2,174 +2,82 @@ package project1.CSC440.Fall2018.user;
 
 import java.sql.*;
 
-public interface Employee {
-	static void createEmployee(Statement st, String role, String eid, String name, String address, String email, String phoneNum, String startDate, String sid){
-		String fields[] = new String[8];
-		fields[0] = role;
-		fields[1] = eid;
-		fields[2] = name;
-		fields[3] = address;
-		fields[4] = email;
-		fields[5] = phoneNum;
-		fields[6] = startDate;
-		fields[7] = sid;
-		try{
-			st.executeUpdate("INSERT INTO Employees", fields);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error creating employee");
-		}
+public class Employee {
+	public static void createEmployee(Connection conn, String role, String eid, String name, String address, String email, String phoneNum) throws SQLException{
+		String qstr = "INSERT INTO Employees ?, ?, ?, ?, ?, ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, role);
+		st.setString(2, eid);
+		st.setString(3, name);
+		st.setString(4, address);
+		st.setString(5, email);
+		st.setString(6, phoneNum);
+		st.executeUpdate();
 	}
-	static ResultSet getEmployee(Statement st, String eid){
-		String qstr = "SELECT * FROM Employees WHERE eid = " + eid;
+	public static ResultSet getEmployee(Connection conn, String eid) throws SQLException{
+		String qstr = "SELECT * FROM Employees WHERE eid = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		st.setString(1, eid);
 		ResultSet rs = null;
-		try{
-			rs = st.executeQuery(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error getting employee");
-		}
+		rs = st.executeQuery();
 		return rs;
 	}
-	static void updateEmployee(Statement st, String eid, String role, String name, String address, String email, String phoneNum, String startDate, String compensation, String sid){
+	public static void updateEmployee(Connection conn, String role, String eid, String name, String address, String email, String phoneNum) throws SQLException{
 		String qstr = "UPDATE Employees SET";
+		int[] track = {0,0,0,0,0,0};
 		if (!(role == null) && !(role.length() == 0)){
-			qstr += " role = " + role + ",";
+			qstr += " role = ?,";
+			track[0] = 1;
 		}
 		if (!(eid == null) && !(eid.length() == 0)){
-			qstr += " eid = " + eid + ",";
+			qstr += " eid = ?,";
+			track[1] = 1;
 		}
 		if (!(name == null) && !(name.length() == 0)){
-			qstr += " name = " + name + ",";
+			qstr += " name = ?,";
+			track[2] = 1;
 		}
 		if (!(address == null) && !(address.length() == 0)){
-			qstr += " address = " + address + ",";
+			qstr += " address = ?,";
+			track[3] = 1;
 		}
 		if (!(email == null) && !(email.length() == 0)){
-			qstr += " email = " + email + ",";
+			qstr += " email = ?,";
+			track[4] = 1;
 		}
 		if (!(phoneNum == null) && !(phoneNum.length() == 0)){
-			qstr += " phone = " + phoneNum + ",";
+			qstr += " phone = ?,";
+			track[5] = 1;
 		}
-		if (!(startDate == null) && !(startDate.length() == 0)){
-			qstr += " startDate = " + startDate + ",";
-		}
-		if (!(sid == null) && !(sid.length() == 0)){
-			qstr += " sid = " + sid + ",";
-		}
-		
 		qstr = qstr.substring(0, qstr.length() - 1);
-		qstr += " WHERE eid = " + eid;
-		try{
-			st.executeUpdate(qstr);
-		} catch (SQLException e){
-			throw new IllegalArgumentException("Error updating employee");
+		qstr += " WHERE eid = ?";
+		PreparedStatement st = conn.prepareStatement(qstr);
+		int count = 1;
+		if(track[0] == 1){
+			st.setString(count, role);
+			count++;
 		}
-	}
-	static ResultSet employeeGetName(Statement st, String eid){
-		String qstr = "SELECT name FROM Employees WHERE eid = " + eid;
-		ResultSet rs = null;
-		try{
-			rs = st.executeQuery(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error getting name");
+		if(track[1] == 1){
+			st.setString(count, eid);
+			count++;
 		}
-		return rs;
-	}
-	static void employeeSetName(Statement st, String eid, String name){
-		String qstr = "UPDATE Employee SET name = " + name + " WHERE eid = " + eid;
-		try{
-			st.executeUpdate(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error setting name");
+		if(track[2] == 1){
+			st.setString(count, name);
+			count++;
 		}
-	}
-	static ResultSet employeeGetAddress(Statement st, String eid){
-		String qstr = "SELECT address FROM Employee WHERE eid = " + eid;
-		ResultSet rs = null;
-		try{
-			rs = st.executeQuery(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error getting email");
+		if(track[3] == 1){
+			st.setString(count, address);
+			count++;
 		}
-		return rs;
-	}
-	static void employeeSetAddress(Statement st, String eid, String address){
-		String qstr = "UPDATE Employee SET address = " + address + " WHERE eid = " + eid;
-		try{
-			st.executeUpdate(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error setting address");
+		if(track[4] == 1){
+			st.setString(count, email);
+			count++;
 		}
-	}
-	static ResultSet employeeGetEmail(Statement st, String eid){
-		String qstr = "SELECT email FROM Employee WHERE eid = " + eid;
-		ResultSet rs = null;
-		try{
-			rs = st.executeQuery(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error getting email");
+		if(track[5] == 1){
+			st.setString(count, phoneNum);
+			count++;
 		}
-		return rs;
-	}
-	static void employeeSetEmail(Statement st, String eid, String email){
-		String qstr = "UPDATE Employee SET email = " + email + " WHERE eid = " + eid;
-		try{
-			st.executeUpdate(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error setting email");
-		}
-	}
-	static ResultSet employeeGetPhoneNum(Statement st, String eid){
-		String qstr = "SELECT phone FROM Employee WHERE eid = " + eid;
-		ResultSet rs = null;
-		try{
-			rs = st.executeQuery(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error getting phone number");
-		}
-		return rs;
-	}
-	static void employeeSetPhoneNum(Statement st, String eid, String phone){
-		String qstr = "UPDATE Employee SET phone = " + phone + " WHERE eid = " + eid;
-		try{
-			st.executeUpdate(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error setting phone number");
-		}
-	}
-	static ResultSet employeeGetStartDate(Statement st, String eid){
-		String qstr = "SELECT startDate FROM Employee WHERE eid = " + eid;
-		ResultSet rs = null;
-		try{
-			rs = st.executeQuery(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error getting start date");
-		}
-		return rs;
-	}
-	static void employeeSetStartDate(Statement st, String eid, String startDate){
-		String qstr = "UPDATE Employee SET startDate = " + startDate + " WHERE eid = " + eid;
-		try{
-			st.executeUpdate(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error setting start date");
-		}
-	}
-	static ResultSet employeeGetSId(Statement st, String eid){
-		String qstr = "SELECT rate FROM Employee WHERE eid = " + eid;
-		ResultSet rs = null;
-		try{
-			rs = st.executeQuery(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error getting employee sid");
-		}
-		return rs;
-	}
-	static void employeeSetSId(Statement st, String eid, String sid){
-		String qstr = "UPDATE Employee SET sid = " + sid + " WHERE eid = " + eid;
-		try{
-			st.executeUpdate(qstr);
-		} catch (SQLException e) {
-			throw new IllegalArgumentException("Error setting sid");
-		}
+		st.setString(count, eid);
+		st.executeUpdate();
 	}
 }
