@@ -132,6 +132,7 @@ public class AcmeUI {
 					if(match.next() != false && pw.equals("password")){
 						loggedin = true;
 						//Call manager UI
+						AcmeManagerUI.managerMainMenu(conn, st, user);
 						return;
 					}
 					try{
@@ -156,6 +157,7 @@ public class AcmeUI {
 					if(match.next() != false && pw.equals("password")){
 						loggedin = true;
 						//Call mechanic UI
+						AcmeCustomerUI.customerMainMenu(conn, st, user);
 						return;
 					}
 				} catch (SQLException e) {
