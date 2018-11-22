@@ -56,7 +56,6 @@ public class AcmeManagerUI {
 				//call invoices menu
 				break;
 			case 7:
-				in.close();
 				return;
 			default:
 				System.out.println("Please choose one of the menu options displayed.");
