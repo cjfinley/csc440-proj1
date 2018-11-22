@@ -9,6 +9,7 @@ import java.util.*;
 import project1.CSC440.Fall2018.Objects.Vehicle;
 import project1.CSC440.Fall2018.user.Customer;
 import project1.CSC440.Fall2018.user.Employee;
+import project1.CSC440.Fall2018.user.Manager;
 import project1.CSC440.Fall2018.user.Mechanic;
 import project1.CSC440.Fall2018.user.Receptionist;
 
@@ -121,8 +122,91 @@ public class AcmeManagerUI {
 		
 	}
 	private static void payroll(Connection conn, String user) {
-		// TODO Auto-generated method stub
-		
+		boolean keepGoing = true;
+		while( keepGoing ) {
+			System.out.print("Employee ID: ");
+			String eid = in.nextLine();
+			ResultSet rs = null;
+			ResultSet r = null;
+			try {
+				rs = Employee.getEmployee(conn, eid);
+			} catch (SQLException e1) {
+				System.out.println("Error finding employee");
+				return;
+			}
+			String role = null;
+			try {
+				role = rs.getString("role");
+			} catch (SQLException e1) {
+				System.out.println("Error finding employee role.");
+				return;
+			}
+			if ( role != null && role.equals("manager")) {
+				try {
+					r = Manager.getManager(conn, eid);
+					System.out.printf("Employee ID: %s%n", r.getString("eid"));
+					System.out.printf("Name: %s%n", r.getString("name"));
+					System.out.printf("Address: %s%n", r.getString("address"));
+					System.out.printf("Email: %s%n", r.getString("email"));
+					System.out.printf("Phone Number: %s%n", r.getString("phone"));
+					System.out.printf("Role: %s%n", r.getString("role"));
+					System.out.printf("Compensation: $%s%n", r.getString("salary"));
+					System.out.println("Compensation Frquency: Monthly");
+				} catch (SQLException e) {
+					System.out.println("Error finding manager");
+					return;
+				}
+			} else if ( role != null && role.equals("receptionist")) {
+				try {
+					r = Receptionist.getReceptionist(conn, eid);
+					System.out.printf("Employee ID: %s%n", r.getString("eid"));
+					System.out.printf("Name: %s%n", r.getString("name"));
+					System.out.printf("Address: %s%n", r.getString("address"));
+					System.out.printf("Email: %s%n", r.getString("email"));
+					System.out.printf("Phone Number: %s%n", r.getString("phone"));
+					System.out.printf("Role: %s%n", r.getString("role"));
+					System.out.printf("Compensation: $%s%n", r.getString("salary"));
+					System.out.println("Compensation Frquency: Monthly");
+				} catch (SQLException e) {
+					System.out.println("Error finding receptionist");
+					return;
+				}
+				
+			} else {
+				try {
+					r = Mechanic.getMechanic(conn, eid);
+					System.out.printf("Employee ID: %s%n", r.getString("eid"));
+					System.out.printf("Name: %s%n", r.getString("name"));
+					System.out.printf("Address: %s%n", r.getString("address"));
+					System.out.printf("Email: %s%n", r.getString("email"));
+					System.out.printf("Phone Number: %s%n", r.getString("phone"));
+					System.out.printf("Role: %s%n", r.getString("role"));
+					System.out.printf("Compensation: $%s%n", r.getString("rate"));
+					System.out.println("Compensation Frquency: Hourly");
+				} catch (SQLException e) {
+					System.out.println("Error finding mechanic");
+					return;
+				}
+			}
+			
+			
+			System.out.println("\nWelcome!\nSelect your choice by entering the corresponding number.");
+			System.out.println("1.\tGo Back");
+			String s = in.nextLine();
+			int choice = 0;
+			try {
+				choice = Integer.parseInt(s);
+			} catch ( NumberFormatException e ) {
+				System.out.println("Is not a valid option, enter a new one.");
+			}
+			switch(choice) {
+			case 1:
+				//Go back
+				return;
+			default:
+				System.out.println("Please choose one of the menu options displayed.");
+			}
+		}
 	}
 	private static void addNewEmployee(Connection conn, String user) {
 		boolean keepGoing = true;
