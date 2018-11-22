@@ -3,7 +3,6 @@ package project1.CSC440.Fall2018.UI;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Scanner;
 
 import project1.CSC440.Fall2018.Objects.Vehicle;

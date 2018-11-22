@@ -1,15 +1,8 @@
 package project1.CSC440.Fall2018.UI;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-
-import project1.CSC440.Fall2018.Objects.Vehicle;
-import project1.CSC440.Fall2018.Records.ServiceHistory;
-import project1.CSC440.Fall2018.user.Customer;
-import project1.CSC440.Fall2018.user.Receptionist;
 
 
 public class AcmeManagerUI {
