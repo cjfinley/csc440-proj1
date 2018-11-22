@@ -46,9 +46,9 @@ public class AcmeCustomerUI {
 				break;
 			case 4:
 				//Call invoice menu
+				AcmeCustomerUI.carInvoiceMenu(conn, user);
 				break;
 			case 5:
-				in.close();
 				return;
 			default:
 				System.out.println("Please choose one of the menu options displayed.");
