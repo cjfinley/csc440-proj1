@@ -98,28 +98,22 @@ public class AcmeManagerUI {
 		return;
 	}
 	private static void serviceHistory(Connection conn, String user) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Error: Option not available");
 	}
 	private static void carServiceDetails(Connection conn, String user) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Error: Option not available");
 	}
 	private static void newCarModel(Connection conn, String user) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Error: Option not available");
 	}
 	private static void notifications(Connection conn, String user) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Error: Option not available");
 	}
 	private static void orders(Connection conn, String user) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Error: Option not available");
 	}
 	private static void inventory(Connection conn, String user) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Error: Option not available");
 	}
 	private static void payroll(Connection conn, String user) {
 		boolean keepGoing = true;
