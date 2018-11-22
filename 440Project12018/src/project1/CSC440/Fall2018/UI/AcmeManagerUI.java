@@ -8,6 +8,8 @@ import java.util.*;
 
 import project1.CSC440.Fall2018.Objects.Vehicle;
 import project1.CSC440.Fall2018.user.Customer;
+import project1.CSC440.Fall2018.user.Employee;
+import project1.CSC440.Fall2018.user.Mechanic;
 import project1.CSC440.Fall2018.user.Receptionist;
 
 
@@ -91,8 +93,8 @@ public class AcmeManagerUI {
 		}
 	}
 	private static void Invoices(Connection conn, String user) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Error recieving invoice.");
+		return;
 	}
 	private static void serviceHistory(Connection conn, String user) {
 		// TODO Auto-generated method stub
@@ -123,8 +125,65 @@ public class AcmeManagerUI {
 		
 	}
 	private static void addNewEmployee(Connection conn, String user) {
-		// TODO Auto-generated method stub
-		
+		boolean keepGoing = true;
+		while( keepGoing ) {
+			System.out.println("\nWelcome!\nSelect your choice by entering the corresponding number.");
+			System.out.println("1.\tAdd");
+			System.out.println("2.\tGo Back");
+			String s = in.nextLine();
+			int choice = 0;
+			try {
+				choice = Integer.parseInt(s);
+			} catch ( NumberFormatException e ) {
+				System.out.println("Is not a valid option, enter a new one.");
+			}
+			switch(choice) {
+			case 1:
+				//add employee
+				System.out.print("Role (Mechanic/Receptionist): ");
+				String role = in.nextLine();
+				System.out.print("Employe ID: ");
+				String eid = in.nextLine();
+				System.out.print("Name: ");
+				String name = in.nextLine();
+				System.out.print("Address: ");
+				String address = in.nextLine();
+				System.out.print("Email: ");
+				String email = in.nextLine();
+				System.out.print("Phone Number: ");
+				String phoneNum = in.nextLine();
+				try {
+					Employee.createEmployee(conn, role, eid, name, address, email, phoneNum);
+				} catch (SQLException e) {
+					System.out.println("Error adding employee");
+					return;
+				}
+				if ( role.charAt(0) == 'M' || role.charAt(0) == 'm' ) {
+					System.out.print("Hourly Rate: ");
+					String rate = in.nextLine();
+					try {
+						Mechanic.createMechanic(conn, role, eid, name, address, email, phoneNum, rate);
+					} catch (SQLException e) {
+						System.out.println("Error adding mechanic.");
+						return;
+					}
+				} else {
+					System.out.print("Salary: ");
+					String salary = in.nextLine();
+					try {
+						Receptionist.createReceptionist(conn, role, eid, name, address, email, phoneNum, salary);
+					} catch (SQLException e) {
+						System.out.println("Error adding receptionist.");
+						return;
+					}
+				}
+			case 2:
+				//Go back
+				return;
+			default:
+				System.out.println("Please choose one of the menu options displayed.");
+			}
+		}
 	}
 	private static void viewCustomerProfile(Connection conn, String user) {
 		boolean keepGoing = true;
