@@ -3,7 +3,6 @@ package project1.CSC440.Fall2018.user;
 import java.sql.*;
 
 import project1.CSC440.Fall2018.Objects.Vehicle;
-import project1.CSC440.Fall2018.Records.ServiceHistory;
 
 public class Customer {
 	public static void createCustomer(Connection conn, String cid, String address, String name, String email, String phone) throws SQLException{

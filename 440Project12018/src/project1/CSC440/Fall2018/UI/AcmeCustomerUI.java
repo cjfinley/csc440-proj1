@@ -74,7 +74,7 @@ public class AcmeCustomerUI {
 				AcmeCustomerUI.viewProfile(conn, user);
 				break;
 			case 2:
-				AcmeCustomerUI.updateProfile(conn);
+				AcmeCustomerUI.updateProfile(conn, user);
 				break;
 			case 3:
 				return;
@@ -136,8 +136,15 @@ public class AcmeCustomerUI {
 			}
 	}
 	
-	public static void updateProfile(Connection conn) {
+	public static void updateProfile(Connection conn, String user) {
 		while( true ) {
+			ResultSet r;
+			try {
+				r = Customer.getCustomer(conn, user);
+			} catch (SQLException e1) {
+				System.out.println("Could not find user\n");
+				return;
+			}
 			System.out.println("\nWelcome Customer!\nSelect your choice by entering the corresponding number.\n");
 			System.out.println("1.\tName");
 			System.out.println("2.\tAddress");
@@ -157,7 +164,7 @@ public class AcmeCustomerUI {
 				System.out.print("Name: ");
 				String name = in.nextLine();
 				try {
-					Customer.updateCustomer(conn, null, null, name, null, null);
+					Customer.updateCustomer(conn, r.getString("cid"), null, name, null, null);
 				} catch (SQLException e) {
 					System.out.println("Error updating name: AcmeCustomerUI.updateProfile.java");
 				}
@@ -166,7 +173,7 @@ public class AcmeCustomerUI {
 				System.out.print("Address: ");
 				String address = in.nextLine();
 				try {
-					Customer.updateCustomer(conn, null, address, null, null, null);
+					Customer.updateCustomer(conn, r.getString("cid"), address, null, null, null);
 				} catch (SQLException e) {
 					System.out.println("Error updating address: AcmeCustomerUI.updateProfile.java");
 				}
@@ -175,7 +182,7 @@ public class AcmeCustomerUI {
 				System.out.print("Phone Number: ");
 				String phone = in.nextLine();
 				try {
-					Customer.updateCustomer(conn, null, null, null, null, phone);
+					Customer.updateCustomer(conn, r.getString("cid"), null, null, null, phone);
 				} catch ( SQLException e ) {
 					System.out.println("Error updating phone: AcmeCustomerUI.updateProfile.java");
 				}
@@ -184,7 +191,7 @@ public class AcmeCustomerUI {
 				System.out.print("Email: ");
 				String email = in.nextLine();
 				try {
-					Customer.updateCustomer(conn, null, null, null, email, null);
+					Customer.updateCustomer(conn, r.getString("cid"), null, null, email, null);
 				} catch ( SQLException e ) {
 					System.out.println("Error updating phone: AcmeCustomerUI.updateProfile.java");
 				}
